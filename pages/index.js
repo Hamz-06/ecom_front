@@ -4,31 +4,45 @@ import Header from '../Components/Header'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faTwitter } from '@fortawesome/free-brands-svg-icons'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useRef, useLayoutEffect } from 'react'
 import { useTransition, animated, useSpring } from 'react-spring'
 
 export default function Home() {
   const [belowCustom, updateCustom] = useState(false)
-  const [title, updateTitle] = useState(['rugs'])
+  const [titles, updateTitle] = useState(['rugs'])
+
+  const sectionOne = useRef()
+  const custom_Word = useRef()
+  const rug_Word = useRef()
   const styles = useSpring({
-    from:{
-      x:-700,
-      
+    from: {
+      x: -700,
+
+
     },
-    to:{
-      x:0,
+    to: {
+      x: 0,
       // opacity: !belowCustom ? 1 : 0,
-      y: belowCustom? 500:0,
+      color: belowCustom ? '#8fa5b6' : '#8fa523',
+      y: belowCustom ? (sectionOne.current.clientHeight - custom_Word.current.offsetTop - custom_Word.current.clientHeight) : 0
 
     },
+  })
 
 
-  }
-  )
+
+
+
+
 
 
   useEffect(() => {
-    const titleRug = document.getElementsByClassName('lol')[0]
+    console.log(custom_Word)
+  }, [])
+
+
+  useEffect(() => {
+
     const observer = new IntersectionObserver((entries) => {
       // console.log(entries)
       // console.log(entries[0].intersectionRatio)
@@ -43,13 +57,10 @@ export default function Home() {
       , {
         threshold: 0.5
       })
-    observer.observe(titleRug)
+    observer.observe(custom_Word.current)
 
   }, [])
 
-  useEffect(() => {
-    console.log(belowCustom)
-  }, [belowCustom])
 
 
   return (
@@ -64,22 +75,35 @@ export default function Home() {
       <Header />
 
       {/* Main Content */}
-      <main className=''>
+      <main>
 
         <section className='text-7xl font-extrabold flex w-full 
-        h-screen flex-col md:flex-row md:text-8xl relative '>
+        h-screen flex-col md:flex-row md:text-8xl ' ref={sectionOne}>
           {/* <button onClick={()=>updateCustom(!belowCustom)}>Click me</button> */}
 
-          <div className='basis-1/2 flex items-center md:items-end md:justify-center justify-end mb-10 flex-col z-10'>
-            <p className='lol'>Custom</p>
+          <div className='basis-1/2 flex items-center md:items-end justify-end mb-10 md:justify-center 
+          flex-col z-10 relative'>
 
-            <animated.p style={styles}>
-              {title}
-            </animated.p>
+            <div className='text-center md:text-right'>
+
+              <p ref={custom_Word} >Custom</p>
+
+              <animated.div style={{ ...styles }}
+                className={``}>
+                {titles}
+
+              </animated.div>
+
+            </div>
 
 
+            {/* <div className=''>lol</div> */}
 
           </div>
+
+
+          {/* svg image of guitar */}
+          {/* 789 */}
           <div className='-z-10 basis-1/2 flex md:items-center justify-center md:justify-start'>
             <svg height="330" viewBox="0 0 230 208" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clipPath="url(#clip0_16_4)" filter="url(#filter0_d_16_4)">
@@ -128,15 +152,30 @@ export default function Home() {
               </defs>
             </svg>
           </div>
-          <div className='h-80 w-80 md:h-96 md:w-96 absolute bg-lime-300 top-1/2 right-1/2 
-          translate-x-1/2 -translate-y-1/2 rotate-45 -z-20'>
+          {/* background box image */}
+          <div className='w-full h-full absolute flex items-center justify-center'>
+            <div className='h-80 w-80 md:h-96 md:w-96 absolute bg-lime-300 
+           -z-20'>
+            </div>
+
+          </div>
+        </section>
+        {/* section two */}
+        <section className='bg-red-100 w-full h-screen'>
+          <div className='flex h-full '>
+
+            <div className='text-7xl flex-1 bg-orange-800  
+            '>
+              dvdv
+            </div>
+
+            <div className="text-7xl flex-1 bg-lime-400">
+              lo
+            </div>
+
           </div>
         </section>
 
-        <section className='bg-red-100 w-full h-screen'>
-
-        </section>
-  
         <section>
           <div className="fixed bottom-0 right-0 mr-5 mb-5 w-20 h-36 bg-orange-500 flex flex-col
           items-center justify-evenly">
