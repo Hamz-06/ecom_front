@@ -9,40 +9,78 @@ import { useTransition, animated, useSpring } from 'react-spring'
 
 export default function Home() {
   const [belowCustom, updateCustom] = useState(false)
-  const [titles, updateTitle] = useState(['rugs'])
+  const titleTimer = useRef([])
+  const [titles, updateTitle] = useState([])
 
   const sectionOne = useRef()
   const custom_Word = useRef()
   const rug_Word = useRef()
+
+
+
+  function isMobileScreen() {
+    if (sectionOne.current.clientWidth <= 640) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   const styles = useSpring({
     from: {
       x: -700,
-
-
     },
     to: {
       x: 0,
       // opacity: !belowCustom ? 1 : 0,
       color: belowCustom ? '#8fa5b6' : '#8fa523',
-      y: belowCustom ? (sectionOne.current.clientHeight - custom_Word.current.offsetTop - custom_Word.current.clientHeight) : 0
-
+      y: belowCustom ? (sectionOne.current.clientHeight - custom_Word.current.offsetTop - custom_Word.current.clientHeight) : 0,
+      transform: belowCustom && isMobileScreen() ? 'translateY(100%)' : 'translateY(0%)'
     },
   })
 
+  const reset = useCallback(() => {
+
+    titleTimer.current.forEach(clearTimeout)
+    titleTimer.current = []
+    titleTimer.current.push(setTimeout(() => updateTitle(['Apples']), 200))
+    titleTimer.current.push(setTimeout(() => updateTitle(['sadness']), 5000))
+    titleTimer.current.push(setTimeout(() => updateTitle(['Bananas']), 8000))
 
 
-
-
-
-
+  }, [])
 
   useEffect(() => {
-    console.log(custom_Word)
+
+    return () => titleTimer.current.forEach(clearTimeout)
+  }, [])
+
+  const transitions = useTransition(belowCustom, {
+
+    from: {
+      color: '#6e3075',
+      x: -500,
+      opacity: 0,
+    }, enter: {
+      color: '#C36B98',
+      x: 0,
+      opacity: 1,
+    }, leave: {
+      color: '#ffff55',
+      x: 500,
+      opacity: 0
+    }
+
+  })
+
+  // transform:belowCustom?'translateY(100%)':''
+
+  useEffect(() => {
+    console.log(sectionOne)
   }, [])
 
 
   useEffect(() => {
-
     const observer = new IntersectionObserver((entries) => {
       // console.log(entries)
       // console.log(entries[0].intersectionRatio)
@@ -53,7 +91,6 @@ export default function Home() {
         updateCustom(true)
       }
     }
-
       , {
         threshold: 0.5
       })
@@ -61,6 +98,11 @@ export default function Home() {
 
   }, [])
 
+  useEffect(() => {
+    if(belowCustom){
+      reset()
+    }
+  }, [belowCustom])
 
 
   return (
@@ -77,23 +119,19 @@ export default function Home() {
       {/* Main Content */}
       <main>
 
-        <section className='text-7xl font-extrabold flex w-full 
-        h-screen flex-col md:flex-row md:text-8xl ' ref={sectionOne}>
+        <section className='text-7xl flex font-extrabold w-full 
+        h-screen md:text-8xl md:flex-row-reverse flex-col' ref={sectionOne}>
           {/* <button onClick={()=>updateCustom(!belowCustom)}>Click me</button> */}
+          {/* text title */}
+          <div className='basis-1/2 flex flex-col items-center justify-end mb-10 md:items-start md:justify-center 
+          md:flex-col z-10 relative'>
 
-          <div className='basis-1/2 flex items-center md:items-end justify-end mb-10 md:justify-center 
-          flex-col z-10 relative'>
-
-            <div className='text-center md:text-right'>
-
+            <div className='text-center md:text-left'>
               <p ref={custom_Word} >Custom</p>
-
               <animated.div style={{ ...styles }}
                 className={``}>
-                {titles}
-
+                Rugs
               </animated.div>
-
             </div>
 
 
@@ -101,10 +139,9 @@ export default function Home() {
 
           </div>
 
-
           {/* svg image of guitar */}
           {/* 789 */}
-          <div className='-z-10 basis-1/2 flex md:items-center justify-center md:justify-start'>
+          <div className='-z-10 basis-1/2 flex md:items-center justify-center md:justify-end'>
             <svg height="330" viewBox="0 0 230 208" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clipPath="url(#clip0_16_4)" filter="url(#filter0_d_16_4)">
 
@@ -162,11 +199,27 @@ export default function Home() {
         </section>
         {/* section two */}
         <section className='bg-red-100 w-full h-screen'>
-          <div className='flex h-full '>
+          <div className='flex h-full flex-col md:flex-row'>
 
             <div className='text-7xl flex-1 bg-orange-800  
             '>
-              dvdv
+              {/* changing title for section two */}
+
+              {
+                transitions((styles, belowCustom) => {
+                  return belowCustom&&(<animated.div style={styles}
+                    className='text-7xl text-center md:text-right md:text-8xl
+                    overflow-y-hidden'>
+                      
+                    <p>{titles}</p>
+
+                    {/* {  console.log(isBelow)} */}
+
+
+                  </animated.div>)
+
+                })
+              }
             </div>
 
             <div className="text-7xl flex-1 bg-lime-400">
