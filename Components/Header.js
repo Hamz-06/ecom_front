@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { ColorSwatchIcon, LockClosedIcon, ViewGridIcon } from '@heroicons/react/solid'
 import { FireIcon, HeartIcon, HiX, PlayIcon, PlusCircleIcon, PlusIcon, ShoppingBagIcon, StarIcon } from '@heroicons/react/outline'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
+import { useEffect } from 'react'
 const Header=()=> {
   const [displaySideBar, updateSideBar] = useState(false)
   const links = [
@@ -20,6 +21,10 @@ const Header=()=> {
       name: 'Quality',
     }
   ]
+
+  useEffect(()=>{
+    console.log('lol')
+  })
 
   // return (
 

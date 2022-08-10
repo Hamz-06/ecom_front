@@ -6,9 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faTwitter } from '@fortawesome/free-brands-svg-icons'
 import { useCallback, useEffect, useState, useRef, useLayoutEffect } from 'react'
 import { useTransition, animated, useSpring } from 'react-spring'
-
+import { InfoCard } from '../Components/InfoCard'
 export default function Home() {
   const [belowCustom, updateCustom] = useState(false)
+  
+  const secTwo_pageOne = useRef()
+  const secTwo_pageTwo = useRef()
+  const secTwo_pageThird = useRef()
   const titleTimer = useRef([])
   const [titles, updateTitle] = useState([])
 
@@ -18,15 +22,15 @@ export default function Home() {
 
 
 
-  function isMobileScreen() {
-    if (sectionOne.current.clientWidth <= 640) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // function isMobileScreen() {
+  //   if (sectionOne.current.clientWidth <= 640) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
-  const styles = useSpring({
+  const rug_Word_style = useSpring({
     from: {
       x: -700,
     },
@@ -35,7 +39,7 @@ export default function Home() {
       // opacity: !belowCustom ? 1 : 0,
       color: belowCustom ? '#8fa5b6' : '#8fa523',
       y: belowCustom ? (sectionOne.current.clientHeight - custom_Word.current.offsetTop - custom_Word.current.clientHeight) : 0,
-      transform: belowCustom && isMobileScreen() ? 'translateY(100%)' : 'translateY(0%)'
+      transform: belowCustom ? 'translateY(100%)' : 'translateY(0%)'
     },
   })
 
@@ -47,26 +51,26 @@ export default function Home() {
     titleTimer.current.push(setTimeout(() => updateTitle(['sadness']), 5000))
     titleTimer.current.push(setTimeout(() => updateTitle(['Bananas']), 8000))
 
-
-  }, [])
-
-  useEffect(() => {
-
     return () => titleTimer.current.forEach(clearTimeout)
   }, [])
+
+
 
   const transitions = useTransition(belowCustom, {
 
     from: {
-      color: '#6e3075',
+
       x: -500,
       opacity: 0,
-    }, enter: {
-      color: '#C36B98',
-      x: 0,
-      opacity: 1,
-    }, leave: {
-      color: '#ffff55',
+      transform: 'perspective(600px) rotateX(0deg)',
+    }, enter: [
+
+      { x: 0, opacity: 1, },
+      { transform: 'perspective(600px) rotateX(180deg)' },
+      { transform: 'perspective(600px) rotateX(0deg)' },
+    ],
+    leave: {
+
       x: 500,
       opacity: 0
     }
@@ -76,30 +80,40 @@ export default function Home() {
   // transform:belowCustom?'translateY(100%)':''
 
   useEffect(() => {
-    console.log(sectionOne)
+
   }, [])
 
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
-      // console.log(entries)
-      // console.log(entries[0].intersectionRatio)
-      //above custom - so pull up
-      if (entries[0].intersectionRatio >= 0.5) {
-        updateCustom(false)
-      } else if (entries[0].intersectionRatio < 0.5) {
-        updateCustom(true)
-      }
-    }
-      , {
-        threshold: 0.5
+      
+
+      entries.forEach((entry) => {
+        
+
+
+        if (entry.target === custom_Word.current) {
+          if (entry.intersectionRatio >= 0.5) {
+            updateCustom(false)
+          } else if (entry.intersectionRatio < 0.5) {
+            updateCustom(true)
+          }
+        }
       })
+      
+    }, {
+      threshold: 0.5
+    })
+
     observer.observe(custom_Word.current)
+
 
   }, [])
 
+
+
   useEffect(() => {
-    if(belowCustom){
+    if (belowCustom) {
       reset()
     }
   }, [belowCustom])
@@ -114,10 +128,10 @@ export default function Home() {
       </Head>
       {/* header content */}
 
-      <Header />
+      {Header()}
 
       {/* Main Content */}
-      <main>
+      <main className='overflow-x-hidden'>
 
         <section className='text-7xl flex font-extrabold w-full 
         h-screen md:text-8xl md:flex-row-reverse flex-col' ref={sectionOne}>
@@ -128,7 +142,7 @@ export default function Home() {
 
             <div className='text-center md:text-left'>
               <p ref={custom_Word} >Custom</p>
-              <animated.div style={{ ...styles }}
+              <animated.div style={{ ...rug_Word_style }}
                 className={``}>
                 Rugs
               </animated.div>
@@ -197,38 +211,74 @@ export default function Home() {
 
           </div>
         </section>
-        {/* section two */}
-        <section className='bg-red-100 w-full h-screen'>
-          <div className='flex h-full flex-col md:flex-row'>
 
-            <div className='text-7xl flex-1 bg-orange-800  
+        {/* section two */}
+        <section className='h-screen'>
+          <div className='flex h-full flex-col '>
+
+            <div className='text-7xl h-48 md:h-60 bg-orange-800  
             '>
               {/* changing title for section two */}
 
-              {
-                transitions((styles, belowCustom) => {
-                  return belowCustom&&(<animated.div style={styles}
-                    className='text-7xl text-center md:text-right md:text-8xl
-                    overflow-y-hidden'>
-                      
-                    <p>{titles}</p>
+              {transitions((styles, belowCustom) => {
+                return belowCustom && (<animated.div style={styles}
+                  className='text-7xl text-center md:text-8xl'>
 
-                    {/* {  console.log(isBelow)} */}
+                  <p>{titles}</p>
+                </animated.div>)
+              })}
 
 
-                  </animated.div>)
-
-                })
-              }
             </div>
+            {/* three differnt boards  */}
+            <div className="basis-full bg-lime-300 grid grid-flow-col
+             overflow-x-auto overscroll-x-inline-contain snap-mandatory snap-x
+             overflow-y-hidden">
 
-            <div className="text-7xl flex-1 bg-lime-400">
-              lo
+
+              <div ref={secTwo_pageOne} className='w-screen md:w-full h-full bg-pink-200 snap-start
+                flex items-center justify-center' >
+                <InfoCard
+                  title={'Welcome'}
+                  image={''}
+                  firstPara={'hello this is good because'}
+                  secondPara={'this is not real'}
+                  refPage={secTwo_pageOne}
+                  />
+
+              </div>
+
+              <div ref={secTwo_pageTwo} className='w-screen md:w-full h-full bg-pink-600 snap-start
+                flex items-center justify-center'>
+                <InfoCard
+                  title={'Welcome'}
+                  image={''}
+                  firstPara={'hello this is good because'}
+                  secondPara={'this is not real'} 
+                  refPage={secTwo_pageTwo}
+                  />
+
+              </div>
+
+              <div ref={secTwo_pageThird} className='w-screen md:w-full h-full bg-green-200 snap-start
+                flex items-center justify-center'>
+                
+                <InfoCard
+                  title={'Welcome'}
+                  image={''}
+                  firstPara={'hello this is good because'}
+                  secondPara={'this is not real'}
+                  refPage={secTwo_pageThird}
+                  />
+
+              </div>
             </div>
-
           </div>
         </section>
 
+        <section className='w-screen h-screen bg-red-600'></section>
+
+        {/* follow buttons bottom right */}
         <section>
           <div className="fixed bottom-0 right-0 mr-5 mb-5 w-20 h-36 bg-orange-500 flex flex-col
           items-center justify-evenly">

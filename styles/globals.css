@@ -5,3 +5,7 @@
 .icon-size{
   @apply h-10;
 }
+
+.overscroll-x-inline-contain{
+  overscroll-behavior-inline: contain;
+}
