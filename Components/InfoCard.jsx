@@ -2,10 +2,10 @@ import { colors } from '@react-spring/shared'
 import React from 'react'
 import { useState } from 'react'
 import { useRef } from 'react'
-import { useEffect } from 'react'
+import { useEffect, memo } from 'react'
 import { useSpring, animated } from 'react-spring'
 
-export function InfoCard({ title, image, firstPara, secondPara, refPage }) {
+const InfoCard=({ title, image, firstPara, secondPara, refPage })=>{
     const infoCard = useRef()
     const [belowSecTwo, updateBelowSecTwo] = useState(false)
     //moves up the page- creates nice swipe animation
@@ -27,7 +27,8 @@ export function InfoCard({ title, image, firstPara, secondPara, refPage }) {
             //if we cross 50 percent of the page create swipe animation
             entries.forEach((entry) => {
                 //below sec by 50 percent two create swipe up
-                if (entry.intersectionRatio >= 0.5) {
+               
+                if (entry.intersectionRatio >= 0.65) {
 
                     updateBelowSecTwo(true)
                 }else{
@@ -36,7 +37,7 @@ export function InfoCard({ title, image, firstPara, secondPara, refPage }) {
             })
 
         }, {
-            threshold: 0.5
+            threshold: 0.65
         })
         //observes the page we are on div 
         observer.observe(refPage.current)
@@ -59,7 +60,8 @@ export function InfoCard({ title, image, firstPara, secondPara, refPage }) {
                 {firstPara}
             </div>
 
-
         </animated.div>
     )
 }
+const InfoCards = memo(InfoCard)
+export{InfoCards}

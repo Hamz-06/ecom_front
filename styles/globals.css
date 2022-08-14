@@ -2,10 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-.icon-size{
+
+.icon-size {
   @apply h-10;
 }
 
-.overscroll-x-inline-contain{
+.overscroll-x-inline-contain {
   overscroll-behavior-inline: contain;
+}
+
+.backgroundImage {
+  background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+}
+
+@font-face {
+
+  font-family: 'intern-regular';
+  src: url('/fonts/inter-regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+
+  font-family: 'intern-bold';
+  src: url('/fonts/inter-Bold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+
+}
+@font-face {
+
+  font-family: 'intern-extraBold';
+  src: url('/fonts/inter-ExtraBold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+
 }

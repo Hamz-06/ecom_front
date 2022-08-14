@@ -2,7 +2,7 @@ import React from 'react'
 import { ColorSwatchIcon, LockClosedIcon, ViewGridIcon } from '@heroicons/react/solid'
 import { FireIcon, HeartIcon, HiX, PlayIcon, PlusCircleIcon, PlusIcon, ShoppingBagIcon, StarIcon } from '@heroicons/react/outline'
 import { useState, useCallback } from 'react'
-import { useEffect } from 'react'
+import { useEffect, memo } from 'react'
 const Header=()=> {
   const [displaySideBar, updateSideBar] = useState(false)
   const links = [
@@ -22,9 +22,7 @@ const Header=()=> {
     }
   ]
 
-  useEffect(()=>{
-    console.log('lol')
-  })
+ 
 
   // return (
 
@@ -178,4 +176,4 @@ const Header=()=> {
   )
 }
 
-export default Header
+export default memo(Header)
