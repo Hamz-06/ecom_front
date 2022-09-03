@@ -29,79 +29,9 @@ function About({ products, collection }) {
 
 
 
-  const Products=()=>{
-    const [isHover, setHover] = useState(false)
-    //loop through every product
-    return products.map((product, index) => {
-
-      // const productOptions = product.options
-
-      // productOptions.map((productOption) => {
-      //   const variantName = productOption.name
-      //   const varientValues = productOption.values
-      //   // console.log(varientValues)
-      //   // const contains = varientValues.map((varientVal) => {
-      //   //   if (varientVal.value === color || varientVal.value === size) {
-      //   //     return {true:varientVal.value }
-      //   //   } else { return {false:varientVal.value}  }
-      //   // })
-
-      //   // console.log(contains)
-      //   const correct = varientValues.filter((val) => {
-
-      //     // console.log(val.value,color)
-      //     const isSize = size.includes(val.value)
-      //     const isColor = color.includes(val.value)
-      //     return isSize || isColor
-      //     // console.log(isColor,val.value, index)
-      //   })
-
-      //   console.log('')
-      //   console.log(correct, variantName, index)
-
-      // })
-
-
-      console.log(product.productType)
-      // console.log(JSON.parse(product.images[0]))
-      return (<animated.div
-        style={props}
-        key={index}
-        className='md:w-80 w-96 h-[430px] bg-gray-400 shadow-2xl rounded-md mt-5 p-2'>
-        <div className="w-full h-full relative" onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)}>
-
-          {
-            product.images[0]?.src !== undefined ?
-
-              <Image src={product.images[0].src}
-                width={400}
-                height={400}
-              />
-              : <p className="w-[304px] h-[304px]"></p> //fix this
-          }
-          <p className="font-semibold">{product.handle}</p>
-          {(product.productType !== '') ? <p>{product.productType}</p> : ''}
-          {
-            product.options.map((option, indexOption) => {
-              if (option.name === 'Color') {
-                return <p key={indexOption}>{option.values.length} Colors</p>
-              }
-            })
-          }
-          <p className="absolute bottom-0 text-lg font-semibold">
-            £
-            {
-              product.variants[0].price
-            }
-          </p>
-        </div>
-      </animated.div>)
-    })
-  }
-
   function SecondaryHeader() {
     return (
-      <div className="bg-red-300 w-full h-14 flex justify-between items-center sticky top-0 z-10">
+      <div className="bg-red-300 w-full h-14 flex justify-between items-center sticky top-0 z-10" id='secondaryHeader'>
         <div className="ml-5 text-lg font-bold">
           {category} ({products.length})
         </div>
@@ -112,10 +42,11 @@ function About({ products, collection }) {
       </div>
     )
   }
+
   function Filters() {
 
     return (
-      <div className="flex flex-col text-center">
+      <div className="flex flex-col text-center sticky top-10" >
         {/* reset button */}
         <div className="mt-5">
           <p onClick={() => {
@@ -164,6 +95,108 @@ function About({ products, collection }) {
   }, [])
 
 
+  const Products = ({ product }) => {
+    const [isHover, setHover] = useState(false)
+    const [displayImage, updateDisplayImage] = useState(
+      product.images[0]?.src !== undefined ?
+        product.images[0].src : ''
+    )
+    //loop through every product
+
+
+    // const productOptions = product.options
+
+    // productOptions.map((productOption) => {
+    //   const variantName = productOption.name
+    //   const varientValues = productOption.values
+    //   // console.log(varientValues)
+    //   // const contains = varientValues.map((varientVal) => {
+    //   //   if (varientVal.value === color || varientVal.value === size) {
+    //   //     return {true:varientVal.value }
+    //   //   } else { return {false:varientVal.value}  }
+    //   // })
+
+    //   // console.log(contains)
+    //   const correct = varientValues.filter((val) => {
+
+    //     // console.log(val.value,color)
+    //     const isSize = size.includes(val.value)
+    //     const isColor = color.includes(val.value)
+    //     return isSize || isColor
+    //     // console.log(isColor,val.value, index)
+    //   })
+
+    //   console.log('')
+    //   console.log(correct, variantName, index)
+
+    // })
+    // useEffect(()=>{
+    //   product.images[0]?.src !== undefined ?
+    //   updateDisplayImage(product.images[0].src):updateDisplayImage('')
+    // },[])
+
+    useEffect(() => {
+      //if hover display second image
+      console.log(isHover)
+      if (isHover) {
+        if (product.images[1]?.src) {
+
+          updateDisplayImage(product.images[1].src)
+        }
+      } else {
+        if (product.images[0]?.src){
+          
+          updateDisplayImage(product.images[0].src)
+        }
+      }
+
+    }, [isHover])
+
+    // console.log(JSON.parse(product.images[0]))
+    return (<animated.div
+      style={props}
+
+      className='md:w-80 w-96 h-[430px] bg-gray-400 shadow-2xl rounded-md mt-5 p-2'>
+
+
+      {/* <div className="w-full h-full relative"> */}
+      <div className="w-full h-full relative" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+
+        {
+          displayImage !== '' ?
+            <Image src={displayImage}
+              width={400}
+              height={400}
+            />
+            : <p className="w-[304px] h-[304px]"></p> //fix this
+        }
+
+        {/* title  */}
+        <p className="font-semibold">{product.handle}</p>
+        <div className="h-14">
+          {/* type of item-can be seen in shopify (could break with multiple product types) */}
+          {(product.productType !== '') ? <p>{product.productType}</p> : ''}
+          {/* //number of color options  */}
+          {
+            product.options.map((option, indexOption) => {
+              if (option.name === 'Color') {
+                return <p key={indexOption}>{option.values.length} Colors</p>
+              }
+            })
+          }
+
+          <p className="absolute bottom-0 text-lg font-semibold">
+            £
+            {
+              product.variants[0].price
+            }
+          </p>
+        </div>
+      </div>
+    </animated.div>)
+
+  }
+
 
   return (
     <>
@@ -172,22 +205,25 @@ function About({ products, collection }) {
         {/* header for items */}
         <SecondaryHeader />
         {/* filters and products  */}
-        <div className="w-full h-full flex">
+        <div className="w-full h-full flex ">
           {/* remove products and display filters if on mobile screen */}
           <div id='products' className='flex flex-wrap justify-evenly w-full h-full' style={{ display: isMobile && filters ? 'none' : 'flex' }}>
-            <Products />
+            {
+              products.map((product, index) => {
+
+                return <Products product={product} key={index} />
+              })
+            }
           </div>
 
           {/* display filters if true  */}
           {filters ? (
-            <div className="absolute w-full bg-yellow-600 h-screen md:w-1/4 md:relative">
+            <div className="absolute w-full md:w-1/4 md:relative bg-slate-500">
               <Filters />
             </div>
 
           ) : ''}
 
-        </div>
-        <div className="h-screen w-full">
 
         </div>
       </div>
