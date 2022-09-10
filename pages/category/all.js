@@ -1,12 +1,15 @@
 
 import React from "react"
 import { useEffect, useState, useRef } from "react"
-import { client } from "../../util/Shopify"
+import { stripe } from "../../util/Shopify"
 import { useTransition, animated, useSpring, config } from 'react-spring'
 import Header from "../../Components/Header"
 import Image from 'next/image'
+import Link from "next/link"
+import { ColorSwatchIcon } from "@heroicons/react/solid"
 
-function About({ products, collection }) {
+function About({ products }) {
+
   console.log(products)
   const [filters, updateFilters] = useState(true)
   const [category, updateCategory] = useState('all')
@@ -33,7 +36,7 @@ function About({ products, collection }) {
     return (
       <div className="bg-red-300 w-full h-14 flex justify-between items-center sticky top-0 z-10" id='secondaryHeader'>
         <div className="ml-5 text-lg font-bold">
-          {category} ({products.length})
+          {/* {category} ({products.length}) */}
         </div>
         <div className="flex mr-5">
           <p onClick={() => updateFilters(!filters)} className="mr-12">{filters ? 'Hide' : 'Show'} Filters</p>
@@ -95,12 +98,16 @@ function About({ products, collection }) {
   }, [])
 
 
-  const Products = ({ product }) => {
+  const Product = ({ product }) => {
+
+
     const [isHover, setHover] = useState(false)
     const [displayImage, updateDisplayImage] = useState(
-      product.images[0]?.src !== undefined ?
-        product.images[0].src : ''
+      product?.images[0] !== undefined ?
+        product?.images[0] : ''
     )
+    const prodctNameClear = product.name.replace(/\s/g,'')
+    const productId = product.product
     //loop through every product
 
 
@@ -137,63 +144,59 @@ function About({ products, collection }) {
 
     useEffect(() => {
       //if hover display second image
-      console.log(isHover)
-      if (isHover) {
-        if (product.images[1]?.src) {
 
-          updateDisplayImage(product.images[1].src)
+      if (isHover) {
+        if (product?.images[1]) {
+
+          updateDisplayImage(product.images[1])
         }
       } else {
-        if (product.images[0]?.src){
-          
-          updateDisplayImage(product.images[0].src)
+        if (product?.images[0]) {
+
+          updateDisplayImage(product.images[0])
         }
       }
 
     }, [isHover])
 
-    // console.log(JSON.parse(product.images[0]))
-    return (<animated.div
-      style={props}
+    //http://localhost:3000/category/product/lol
 
-      className='md:w-80 w-96 h-[430px] bg-gray-400 shadow-2xl rounded-md mt-5 p-2'>
+    return (
+      <Link href={`/category/product/${prodctNameClear}-${productId}`}>
+        <animated.div
+          style={props}
+          className='md:w-80 w-96 h-[430px] bg-gray-400 shadow-2xl rounded-md mt-5 p-2'>
+          {/* <div className="w-full h-full relative"> */}
+          <div className="w-full h-full relative" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
 
-
-      {/* <div className="w-full h-full relative"> */}
-      <div className="w-full h-full relative" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-
-        {
-          displayImage !== '' ?
-            <Image src={displayImage}
-              width={400}
-              height={400}
-            />
-            : <p className="w-[304px] h-[304px]"></p> //fix this
-        }
-
-        {/* title  */}
-        <p className="font-semibold">{product.handle}</p>
-        <div className="h-14">
-          {/* type of item-can be seen in shopify (could break with multiple product types) */}
-          {(product.productType !== '') ? <p>{product.productType}</p> : ''}
-          {/* //number of color options  */}
-          {
-            product.options.map((option, indexOption) => {
-              if (option.name === 'Color') {
-                return <p key={indexOption}>{option.values.length} Colors</p>
-              }
-            })
-          }
-
-          <p className="absolute bottom-0 text-lg font-semibold">
-            £
             {
-              product.variants[0].price
+              displayImage !== '' ?
+                <Image src={displayImage}
+                  width={400}
+                  height={400}
+                />
+                : <p className="w-[304px] h-[304px]"></p> //fix this
             }
-          </p>
-        </div>
-      </div>
-    </animated.div>)
+
+            {/* title  */}
+            <p className="font-semibold">{product.name}</p>
+            <div className="h-14">
+              {/* type of item-can be seen in shopify (could break with multiple product types) */}
+              {/* {(product.productType !== '') ? <p>{product.productType}</p> : ''} */}
+              {/* //number of color options  */}
+
+
+              <p className="absolute bottom-0 text-lg font-semibold">
+                £
+                {
+                  product.unit_amount
+                }
+              </p>
+            </div>
+          </div>
+        </animated.div>
+      </Link>
+    )
 
   }
 
@@ -205,13 +208,13 @@ function About({ products, collection }) {
         {/* header for items */}
         <SecondaryHeader />
         {/* filters and products  */}
-        <div className="w-full h-full flex ">
+        <div className="w-full h-screen flex ">
           {/* remove products and display filters if on mobile screen */}
           <div id='products' className='flex flex-wrap justify-evenly w-full h-full' style={{ display: isMobile && filters ? 'none' : 'flex' }}>
             {
               products.map((product, index) => {
 
-                return <Products product={product} key={index} />
+                return <Product product={product} key={index} />
               })
             }
           </div>
@@ -232,16 +235,25 @@ function About({ products, collection }) {
 }
 
 export async function getServerSideProps() {
-  const products = await client.product.fetchAll()
-  const collection = await client.collection.fetchAllWithProducts()
+  const fetchProducts = await stripe.products.list();
+
+  const fetchPrices = await stripe.prices.list();
+
+  let products = fetchProducts.data.map((product, index) => {
+    return { ...product, ...fetchPrices.data[index] }
+  })
+
   return {
     props: {
-      products: JSON.parse(JSON.stringify(products)),
-      collection: JSON.parse(JSON.stringify(collection)),
+      products
 
     }
   }
 }
+
+
+
+
 
 
 
