@@ -7,10 +7,12 @@ import Header from "../../Components/Header"
 import Image from 'next/image'
 import Link from "next/link"
 import { ColorSwatchIcon } from "@heroicons/react/solid"
+import { useRouter } from 'next/router'
 
 function About({ products }) {
 
-  console.log(products)
+  const router = useRouter()
+  console.log(router)
   const [filters, updateFilters] = useState(true)
   const [category, updateCategory] = useState('all')
   const [color, updateColor] = useState('')

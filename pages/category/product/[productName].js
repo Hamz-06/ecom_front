@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { stripe } from '../../../util/Shopify'
 function product({ product, price }) {
 
-    // console.log(price, product)
+    console.log(product)
     // console.log(product.images[0])
 
     const addToBag = (prod) => {
@@ -36,28 +36,6 @@ function product({ product, price }) {
                 }
             })
         }
-
-        // else if (getBag !== null) {
-        //     getBag.map((bag, index) => {
-        //         //if incoming product is already in cart add to its quantatity
-        //         if (bag.productName === prod.productName) {
-
-        //             const updatedQuantity = bag.quantity + 1
-        //             getBag = [{ ...bag, quantity: updatedQuantity }]
-
-        //         }
-        //         //else if incoming product is not in cart add it, needs to be final index 
-        //         else if (index !== getBag.length && bag.productName !== prod.productName) {
-
-        //             getBag.push(prod)
-
-        //         }
-
-        //     })
-        //     window.localStorage.setItem('BASKET', JSON.stringify(getBag))
-
-        // }
-
 
     }
 
@@ -121,10 +99,13 @@ function product({ product, price }) {
                         </div>
                         <div className=''>
                             <button
+                            //add the item to the bag - local storage, save this object locally 
                                 onClick={() => addToBag({
                                     productName: product.name,
                                     price: price.unit_amount,
                                     productID: product.id,
+                                    priceID:price.id,
+                                    picture:product.images[0],
                                     quantity: 1
                                 })
                                 }>
