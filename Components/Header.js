@@ -4,6 +4,7 @@ import { FireIcon, HeartIcon, HiX, PlayIcon, PlusCircleIcon, PlusIcon, ShoppingB
 import { useState, useCallback } from 'react'
 import { useEffect, memo } from 'react'
 import Link from 'next/link'
+import { app } from '../util/firebase'
 const Header = () => {
   const [displaySideBar, updateSideBar] = useState(false)
   
@@ -57,7 +58,10 @@ const Header = () => {
         {/* Header one  */}
         <div className=' bg-red-500 h-2/5 hidden items-center justify-evenly ml-auto w-1/4 md:flex '>
           <p> Sign In</p>
-          <p>Join Us</p>
+          <Link href={'../sign_up'}>
+            <p>Sign Up</p>
+
+          </Link>
         </div>
         {/* header two */}
         <div className='h-full bg-slate-500 flex flex-row md:h-3/5'>

@@ -3,22 +3,21 @@ import { stripe } from "../../util/shopify";
 export default async function handler(req, res) {
   // console.log(req.method)
   
-  const items = JSON.parse(req.body.lineItems)
-  // console.log(items)
-  // res.status(200).json({lil:'f'})
-  
-
+  const items = JSON.parse(req.body)
+  // res.send({lol:'lx'})
   if (req.method === 'POST') {
     try {
       // Create Checkout Sessions from body params.
       const session = await stripe.checkout.sessions.create({
         line_items: items,
         mode: 'payment',
-        success_url: `${req.headers.origin}/?success=true`,
-        cancel_url: `${req.headers.origin}/category/all/?success=false`,
+        success_url: `${req.headers.origin}/cart/?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${req.headers.origin}/cart/?session_id={CHECKOUT_SESSION_ID}`,
       });
       
-      res.redirect(303, session.url);
+      
+      res.status(200).send(session)
+      
     } catch (err) {
       res.status(err.statusCode || 500).json(err.message);
     }
