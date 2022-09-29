@@ -3,7 +3,7 @@ import { useEffect } from "react"
 import { memo } from "react"
 
 const PopUp = memo(({ customerName, isPaid, customerEmail }) => {
-
+    //if paid remove from local storage
     useEffect(()=>{
         isPaid === 'paid'?window.localStorage.removeItem("BASKET"):''
     },[])

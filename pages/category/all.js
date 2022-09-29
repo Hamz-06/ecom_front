@@ -7,6 +7,7 @@ import Header from "../../Components/Header"
 import Image from 'next/image'
 import Link from "next/link"
 import { ColorSwatchIcon } from "@heroicons/react/solid"
+import { Product } from "../../Components/category/Product"
 
 
 function About({ products }) {
@@ -21,15 +22,6 @@ function About({ products }) {
   const categories = ['all', 'Flags', 'Cartoon']
   const colors = ['red', 'white', 'green', 'blue']
   const sizes = ['small', 'large']
-
-  const props = useSpring({
-    // from: {
-    //   y: -400
-    // },
-    // to: {
-    //   y: 0
-    // }
-  })
 
 
 
@@ -99,108 +91,6 @@ function About({ products }) {
   }, [])
 
 
-  const Product = ({ product }) => {
-
-
-    const [isHover, setHover] = useState(false)
-    const [displayImage, updateDisplayImage] = useState(
-      product?.images[0] !== undefined ?
-        product?.images[0] : ''
-    )
-    const prodctNameClear = product.name.replace(/\s/g,'')
-    const productId = product.product
-    //loop through every product
-
-
-    // const productOptions = product.options
-
-    // productOptions.map((productOption) => {
-    //   const variantName = productOption.name
-    //   const varientValues = productOption.values
-    //   // console.log(varientValues)
-    //   // const contains = varientValues.map((varientVal) => {
-    //   //   if (varientVal.value === color || varientVal.value === size) {
-    //   //     return {true:varientVal.value }
-    //   //   } else { return {false:varientVal.value}  }
-    //   // })
-
-    //   // console.log(contains)
-    //   const correct = varientValues.filter((val) => {
-
-    //     // console.log(val.value,color)
-    //     const isSize = size.includes(val.value)
-    //     const isColor = color.includes(val.value)
-    //     return isSize || isColor
-    //     // console.log(isColor,val.value, index)
-    //   })
-
-    //   console.log('')
-    //   console.log(correct, variantName, index)
-
-    // })
-    // useEffect(()=>{
-    //   product.images[0]?.src !== undefined ?
-    //   updateDisplayImage(product.images[0].src):updateDisplayImage('')
-    // },[])
-
-    useEffect(() => {
-      //if hover display second image
-
-      if (isHover) {
-        if (product?.images[1]) {
-
-          updateDisplayImage(product.images[1])
-        }
-      } else {
-        if (product?.images[0]) {
-
-          updateDisplayImage(product.images[0])
-        }
-      }
-
-    }, [isHover])
-
-    //http://localhost:3000/category/product/lol
-
-    return (
-      <Link href={`/category/product/${prodctNameClear}-${productId}`}>
-        <animated.div
-          style={props}
-          className='md:w-80 w-96 h-[430px] bg-gray-400 shadow-2xl rounded-md mt-5 p-2'>
-          {/* <div className="w-full h-full relative"> */}
-          <div className="w-full h-full relative" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-
-            {
-              displayImage !== '' ?
-                <Image src={displayImage}
-                  width={400}
-                  height={400}
-                />
-                : <p className="w-[304px] h-[304px]"></p> //fix this
-            }
-
-            {/* title  */}
-            <p className="font-semibold">{product.name}</p>
-            <div className="h-14">
-              {/* type of item-can be seen in shopify (could break with multiple product types) */}
-              {/* {(product.productType !== '') ? <p>{product.productType}</p> : ''} */}
-              {/* //number of color options  */}
-
-
-              <p className="absolute bottom-0 text-lg font-semibold">
-                £
-                {
-                  product.unit_amount
-                }
-              </p>
-            </div>
-          </div>
-        </animated.div>
-      </Link>
-    )
-
-  }
-
 
   return (
     <>
@@ -211,7 +101,9 @@ function About({ products }) {
         {/* filters and products  */}
         <div className="w-full h-screen flex ">
           {/* remove products and display filters if on mobile screen */}
-          <div id='products' className='flex flex-wrap justify-evenly w-full h-full' style={{ display: isMobile && filters ? 'none' : 'flex' }}>
+
+          {/* <div id='products' className=' w-full h-full' style={{ display: isMobile && filters ? 'none' : 'flex' }}> */}
+          <div id='products' className='flex flex-wrap w-full h-full justify-center'>
             {
               products.map((product, index) => {
 

@@ -123,9 +123,8 @@ export default function Home() {
   const translateYY = useRef()
 
   useEffect(() => {
-    console.log(sectionThree.current.offsetTop)
     
-    document.addEventListener('scroll',()=>{
+    const calcInfo = () =>{
       var sectionThree_height = sectionThree.current.clientHeight
       var sectionThree_offsetTop = sectionThree.current.offsetTop
       var sectionThree_offsetBottom = window.pageYOffset+sectionThree.current.clientHeight
@@ -138,10 +137,14 @@ export default function Home() {
         sectionThree_shape.current.style.width = shape_width
         // updateTranslateY(h)
         // sectionThree_shape.current
-
       }
+    }
+    document.addEventListener('scroll', calcInfo)
+    return ()=>{
+      document.removeEventListener('scroll', calcInfo)
+    }
 
-    })
+    
   }, [])
 
 
