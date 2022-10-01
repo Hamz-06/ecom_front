@@ -14,7 +14,6 @@ const Header = () => {
       name: 'HomePage',
       Link:'/'
       
-
     }
     ,
     {
