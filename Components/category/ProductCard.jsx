@@ -5,12 +5,10 @@ import { animated, useSpring } from "react-spring"
 import Image from "next/image"
 import { useRef } from "react"
 import Router, { useRouter } from "next/router"
-
-
-
+import { addToFav,fetchFav,removeFromFav } from "../../util/favProducts"
 
 const Products = ({ product }) => {
-
+    
     const props = useSpring({
         // from: {
         //   y: -400
@@ -19,15 +17,14 @@ const Products = ({ product }) => {
         //   y: 0
         // }
     })
-
+    
     const [isHover, setHover] = useState(false)
     const [isLike, setLike] = useState(false)
+    const [displayImage, updateDisplayImage] = useState(
+        product?.images[0] !== undefined ? product?.images[0] : ''
+    )
     const likeButton = useRef()
     const router = useRouter()
-    const [displayImage, updateDisplayImage] = useState(
-        product?.images[0] !== undefined ?
-            product?.images[0] : ''
-    )
     const prodctNameClear = product.name.replace(/\s/g, '')
     const productId = product.product
     //loop through every product
@@ -64,17 +61,35 @@ const Products = ({ product }) => {
     //   updateDisplayImage(product.images[0].src):updateDisplayImage('')
     // },[])
 
-    const addToLike = () => {
+    useEffect(()=>{
+        // console.log(product)
+    },[])
+    const addToFavourite = () =>{
         setLike(!isLike)
-
+        const prod = {
+            productName: product.name,
+            price: product.unit_amount,
+            productID: product.product,
+            priceID: product.id,
+            picture: product.images[0],
+        }
+        if (!isLike){
+            console.log('add to fav')
+            addToFav(prod)
+        }else{
+            console.log('remove from fav')
+            removeFromFav(prod)
+        }
+        
     }
+    useEffect(()=>{
+        const favourites = fetchFav()
+        favourites?.map((fav)=>{
 
-    const isClicked = (e) => {
-        console.log(likeButton)
-        // router.push('/')
-        likeButton.current.contains(e.target) ? console.log('here') : router.push('/')
+            fav.productID===product.product?setLike(true):''
+        })
+    },[])
 
-    }
     useEffect(() => {
         //if hover display second image
 
@@ -100,7 +115,7 @@ const Products = ({ product }) => {
         <animated.div
             style={props}
             className='md:w-80 w-96 h-[430px] bg-gray-400 shadow-md mt-5 mb-5 ml-5 mr-5 p-2'
-            onClick={(e) =>likeButton.current.contains(e.target) ? addToLike() : router.push('/')}>
+            onClick={(e) => likeButton.current.contains(e.target) ? addToFavourite() : router.push(`/category/product/${prodctNameClear}-${productId}`)}>
 
             <div className="w-full h-full relative" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
 

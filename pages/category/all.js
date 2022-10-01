@@ -7,12 +7,11 @@ import Header from "../../Components/Header"
 import Image from 'next/image'
 import Link from "next/link"
 import { ColorSwatchIcon } from "@heroicons/react/solid"
-import { Product } from "../../Components/category/Product"
+import { Product } from "../../Components/category/ProductCard"
 
 
 function About({ products }) {
-
-
+  
   const [filters, updateFilters] = useState(true)
   const [category, updateCategory] = useState('all')
   const [color, updateColor] = useState('')
@@ -27,7 +26,7 @@ function About({ products }) {
 
   function SecondaryHeader() {
     return (
-      <div className="bg-red-300 w-full h-14 flex justify-between items-center sticky top-0 z-10" id='secondaryHeader'>
+      <div className="bg-red-300 w-full h-14 flex justify-between items-center sticky top-0 z-20" id='secondaryHeader'>
         <div className="ml-5 text-lg font-bold">
           {/* {category} ({products.length}) */}
         </div>
@@ -129,17 +128,16 @@ function About({ products }) {
 
 export async function getServerSideProps() {
   const fetchProducts = await stripe.products.list();
-
   const fetchPrices = await stripe.prices.list();
-
+  
   let products = fetchProducts.data.map((product, index) => {
-    return { ...product, ...fetchPrices.data[index] }
+    return { ...product, ...fetchPrices.data[index], metadata: fetchProducts.data[index].metadata }
   })
-
+  
+  
   return {
     props: {
       products
-
     }
   }
 }

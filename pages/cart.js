@@ -113,8 +113,6 @@ function Cart({ session }) {
             .catch((err) => console.log(err))
     }
 
-
-
     return (
         <>
             <Header />

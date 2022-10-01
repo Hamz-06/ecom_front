@@ -3,11 +3,39 @@ import React from 'react'
 import Header from '../../../Components/Header'
 import { useRouter } from 'next/router'
 import { stripe } from '../../../util/Shopify'
+import { addToFav,fetchFav,removeFromFav } from '../../../util/favProducts'
+import { useState } from 'react'
+import { useEffect } from 'react'
 function product({ product, price }) {
 
-    console.log(product)
-    // console.log(product.images[0])
+  
+    const [isLike, setLike] = useState(false)
 
+    useEffect(()=>{
+        const favourites = fetchFav()
+        favourites?.map((fav)=>{
+            fav.productID===product.id?setLike(true):''
+        })
+    },[])
+
+    const addToFavourite = () =>{
+        setLike(!isLike)
+        const prod = {
+            productName: product.name,
+            price: price.unit_amount,
+            productID: product.id,
+            priceID: price.id,
+            picture: product.images[0],
+        }
+        if (!isLike){
+            console.log('add to fav')
+            addToFav(prod)
+        }else{
+            console.log('remove from fav')
+            removeFromFav(prod)
+        }
+        
+    }
     const addToBag = (prod) => {
         // console.log(prod)
 
@@ -19,16 +47,15 @@ function product({ product, price }) {
 
         } else {
             getBag.map((bag, index) => {
-                
-                
+
                 if (bag.productName === prod.productName) {
                     console.log('found')
                     const updatedQuantity = bag.quantity + 1
                     getBag[index].quantity = updatedQuantity
                     window.localStorage.setItem('BASKET', JSON.stringify(getBag))
                 }
-                else if (bag.productName !== prod.productName && index===(getBag.length-1)) {
-                    
+                else if (bag.productName !== prod.productName && index === (getBag.length - 1)) {
+
                     console.log('not found')
                     getBag.push(prod)
                     window.localStorage.setItem('BASKET', JSON.stringify(getBag))
@@ -39,27 +66,6 @@ function product({ product, price }) {
 
     }
 
-    const addToFav = (prod) => {
-        const getFav = JSON.parse(window.localStorage.getItem('FAVOURITE'))
-
-
-        if (getFav) {
-            const isValueFound = getFav.some((fav) => fav.productName === prod.productName)
-
-            if (!isValueFound) {
-                getFav.push(prod)
-                window.localStorage.setItem('FAVOURITE', JSON.stringify(getFav))
-            }
-
-
-        } else if (!getFav) {
-            const getFavArr = []
-            getFavArr.push(prod)
-            window.localStorage.setItem('FAVOURITE', JSON.stringify(getFavArr))
-
-        }
-
-    }
 
     return (
         //if product is not null
@@ -67,7 +73,6 @@ function product({ product, price }) {
             <>
                 <Header />
                 <div className='h-10 flex items-center'></div>
-                <h1>lol</h1>
 
                 <div className=' flex flex-col md:flex-row'>
 
@@ -80,6 +85,12 @@ function product({ product, price }) {
                     <div className='h-[80vh] md:h-[100vh] md:w-[60%] bg-slate-500'>
 
                         <div className='relative w-full h-[80%]'>
+                            <div className='top-0 right-0 absolute z-10'>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill={isLike?'red':'none'} onClick={()=>addToFavourite()} viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className={`w-12 h-12 rounded-full p-1 mt-5 mr-5 z-10 bg-white`} >
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                                </svg>
+
+                            </div>
                             <Image
                                 src={product.images[0]}
                                 layout="fill"
@@ -99,30 +110,20 @@ function product({ product, price }) {
                         </div>
                         <div className=''>
                             <button
-                            //add the item to the bag - local storage, save this object locally 
+                                //add the item to the bag - local storage, save this object locally 
                                 onClick={() => addToBag({
                                     productName: product.name,
                                     price: price.unit_amount,
                                     productID: product.id,
-                                    priceID:price.id,
-                                    picture:product.images[0],
+                                    priceID: price.id,
+                                    picture: product.images[0],
                                     quantity: 1
                                 })
                                 }>
                                 Add to Bag
                             </button>
                         </div>
-                        <div className=''>
-                            <button onClick={() => {
-                                addToFav({
-                                    productName: product.name,
-                                    price: price.unit_amount,
-                                    productID: product.id
-                                })
-                            }}>
-                                Add to Favourites
-                            </button>
-                        </div>
+
                         <div>
                             {product.description}
                         </div>
