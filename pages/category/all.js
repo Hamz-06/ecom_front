@@ -117,14 +117,11 @@ function About({ products }) {
           {/* remove products and display filters if on mobile screen */}
 
           {/* <div id='products' className=' w-full h-full' style={{ display: isMobile && filters ? 'none' : 'flex' }}> */}
-          <div id='products' className={`flex flex-wrap w-full h-full justify-center ${isMobile && filters ? 'invisible':'visible'}`}>
+          <div id='products' className={`flex flex-wrap w-full h-full justify-center ${isMobile && filters ? 'invisible' : 'visible'}`}>
             {
               products.map((product, index) => {
-                const metaData = product.metadata
-
-                return (metaData.type === type || metaData.size === size || (size === '' && type === '')) ? (
-                  <Product product={product} key={index} />
-                ) : ''
+                
+                return <Product product={product} key={index} displayInfo={{ size: size, type: type }} />
 
               })
             }
@@ -132,7 +129,7 @@ function About({ products }) {
 
           {/* display filters if true  */}
           {filters ? (
-            <div className="z-10 absolute bg-red-400 h-screen w-full md:w-1/4 md:relative ">
+            <div className="z-10 absolute bg-red-400 h-screen w-full md:w-1/4 md:relative">
               <Filters />
             </div>
 
