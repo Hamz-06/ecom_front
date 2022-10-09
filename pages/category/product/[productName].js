@@ -3,22 +3,25 @@ import React from 'react'
 import Header from '../../../Components/Header'
 import { useRouter } from 'next/router'
 import { stripe } from '../../../util/Shopify'
-import { addToFav,fetchFav,removeFromFav } from '../../../util/favProducts'
+import { addToFav, fetchFav, removeFromFav } from '../../../util/favProducts'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { decrement, increment } from '../../../redux/slice/numOfFav'
 function product({ product, price }) {
 
-  
+
     const [isLike, setLike] = useState(false)
+    const dispatch = useDispatch()
 
-    useEffect(()=>{
+    useEffect(() => {
         const favourites = fetchFav()
-        favourites?.map((fav)=>{
-            fav.productID===product.id?setLike(true):''
+        favourites?.map((fav) => {
+            fav.productID === product.id ? setLike(true) : ''
         })
-    },[])
+    }, [])
 
-    const addToFavourite = () =>{
+    const addToFavourite = () => {
         setLike(!isLike)
         const prod = {
             productName: product.name,
@@ -27,14 +30,17 @@ function product({ product, price }) {
             priceID: price.id,
             picture: product.images[0],
         }
-        if (!isLike){
+        if (!isLike) {
             console.log('add to fav')
             addToFav(prod)
-        }else{
+            dispatch(increment())
+
+        } else {
             console.log('remove from fav')
             removeFromFav(prod)
+            dispatch(decrement())
         }
-        
+
     }
     const addToBag = (prod) => {
         // console.log(prod)
@@ -86,7 +92,7 @@ function product({ product, price }) {
 
                         <div className='relative w-full h-[80%]'>
                             <div className='top-0 right-0 absolute z-10'>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill={isLike?'red':'none'} onClick={()=>addToFavourite()} viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className={`w-12 h-12 rounded-full p-1 mt-5 mr-5 z-10 bg-white`} >
+                                <svg xmlns="http://www.w3.org/2000/svg" fill={isLike ? 'red' : 'none'} onClick={() => addToFavourite()} viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className={`w-12 h-12 rounded-full p-1 mt-5 mr-5 z-10 bg-white`} >
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                                 </svg>
 

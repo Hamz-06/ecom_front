@@ -14,12 +14,10 @@ function About({ products }) {
 
   const [filters, updateFilters] = useState(true)
   const [type, updatetype] = useState('')
-  const [size, updateSizes] = useState('')
-  const [isMobile, setMobile] = useState()
-
   const types = ['flags', 'cartoon']
-
-  const sizes = ['small', 'large', 'medium']
+  const [isMobile, setMobile] = useState()
+  // const [size, updateSizes] = useState('')
+  // const sizes = ['small', 'large', 'medium']
 
   useEffect(() => {
     resize()
@@ -60,7 +58,7 @@ function About({ products }) {
         <div className="mt-5">
           <p onClick={() => {
             updatetype('')
-            updateSizes('')
+            // updateSizes('')
           }}>Reset</p>
         </div>
 
@@ -83,7 +81,7 @@ function About({ products }) {
 
         <div className="mt-20">
 
-          {sizes.map((sizeLocal, index) => {
+          {/* {sizes.map((sizeLocal, index) => {
             return (
               <div key={index} className='flex justify-center'>
                 <p onClick={() => updateSizes(sizeLocal)} key={index}>{sizeLocal}</p>
@@ -96,7 +94,7 @@ function About({ products }) {
               </div>
 
             )
-          })}
+          })} */}
 
         </div>
 
@@ -108,7 +106,7 @@ function About({ products }) {
     <>
       <Header />
       {type}
-      {size}
+
       <div className="w-screen h-full">
         {/* header for items */}
         <SecondaryHeader />
@@ -120,8 +118,8 @@ function About({ products }) {
           <div id='products' className={`flex flex-wrap w-full h-full justify-center ${isMobile && filters ? 'invisible' : 'visible'}`}>
             {
               products.map((product, index) => {
-                
-                return <Product product={product} key={index} displayInfo={{ size: size, type: type }} />
+
+                return <Product product={product} key={index} displayInfo={{ type: type }} />
 
               })
             }
