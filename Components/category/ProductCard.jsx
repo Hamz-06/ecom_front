@@ -7,7 +7,7 @@ import { useRef } from "react";
 import Router, { useRouter } from "next/router";
 import { addToFav, fetchFav, removeFromFav } from "../../util/favProducts";
 import { useDispatch } from "react-redux";
-import { decrement, increment } from "../../redux/slice/numOfFav";
+import { decrementFav, incrementFav } from "../../redux/slice/numOfFav";
 
 const Products = ({ product, displayInfo }) => {
   const props = useSpring({
@@ -64,7 +64,7 @@ const Products = ({ product, displayInfo }) => {
   // },[])
 
   useEffect(() => {
-    console.log(product);
+    // console.log(product);
   }, []);
   const addToFavourite = () => {
     setLike(!isLike);
@@ -78,11 +78,11 @@ const Products = ({ product, displayInfo }) => {
     if (!isLike) {
       console.log("add to fav");
       addToFav(prod);
-      dispatch(increment());
+      dispatch(incrementFav());
     } else {
       console.log("remove from fav");
       removeFromFav(prod);
-      dispatch(decrement());
+      dispatch(decrementFav());
     }
   };
   useEffect(() => {
@@ -92,6 +92,12 @@ const Products = ({ product, displayInfo }) => {
     });
   }, []);
 
+  //update Price and add currency sign
+  const updatePrice = () => {
+    const priceOfProd = (product.unit_amount / 100).toFixed(2);
+    return "£" + priceOfProd;
+  };
+  //display second image on hover
   useEffect(() => {
     //if hover display second image
 
@@ -159,7 +165,7 @@ const Products = ({ product, displayInfo }) => {
       {/* price  */}
       <div>
         <p className="absolute bottom-0 mb-2 text-lg font-semibold">
-          £{product.unit_amount}
+          {updatePrice()}
         </p>
       </div>
     </animated.div>

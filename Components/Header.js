@@ -7,16 +7,25 @@ import Link from 'next/link'
 import { app } from '../util/firebase'
 import { fetchFav } from '../util/favProducts'
 import { useSelector, useDispatch } from 'react-redux'
-import { increment, setValue } from '../redux/slice/numOfFav'
+import { setValueFav } from '../redux/slice/numOfFav'
+import { fetchBag, fetchBagQuantity } from '../util/cartProducts'
+import { setValueCart } from '../redux/slice/numOfCart'
+import { useMemo } from 'react'
+
 const Header = () => {
   const [displaySideBar, updateSideBar] = useState(false)
-
-  const numOfItems = useSelector(state => state.numOfFav.value)
   const dispatch = useDispatch()
+
+  const numOfFav = useSelector(state => state.numOfFav.value)
+  const numOfCart = useSelector(state => state.numOfCart.value)
+
   useEffect(() => {
     const favProd = fetchFav()
+    const cartProdQuantity = fetchBagQuantity()
     const favProdLength = favProd.length
-    dispatch(setValue(favProdLength))
+
+    dispatch(setValueFav(favProdLength))
+    dispatch(setValueCart(cartProdQuantity))
   }, [])
 
 
@@ -35,7 +44,22 @@ const Header = () => {
     }
   ]
 
+  // header for sign in and out
+  const headerOne = useMemo(() => {
+    console.log('reload')
+    {/* Header one  */ }
+    return (
+      <div className=' bg-red-500 h-2/5 hidden items-center justify-evenly ml-auto w-1/4 md:flex md:justify-center text-sm'>
 
+        <p> Sign In </p>
+
+        <div className='h-5 border-l border-1 border-black mr-5 ml-5'></div>
+        {/* <Link href={'../sign_up'}> */}
+        <p> Sign Up</p>
+        {/* </Link> */}
+      </div>
+    )
+  }, [])
 
   const sideBar = () => {
 
@@ -65,21 +89,14 @@ const Header = () => {
     ) : ''
 
   }
+
+
   return (
     <>
       <header className='h-[75px] md:h-[95px]'>
-        {/* Header one  */}
-        <div className=' bg-red-500 h-2/5 hidden items-center justify-evenly ml-auto w-1/4 md:flex md:justify-center text-sm'>
+        {/* header one */}
+        {headerOne}
 
-          <p> Sign In </p>
-
-          <div className='h-5 border-l border-1 border-black mr-5 ml-5'></div>
-          <Link href={'../sign_up'}>
-            <p> Sign Up</p>
-          </Link>
-
-
-        </div>
         {/* header two */}
         <div className='h-full bg-slate-500 flex flex-row md:h-3/5'>
           {/* side button mobile */}
@@ -126,7 +143,7 @@ const Header = () => {
                 </svg>
               </Link>
               <div className='rounded-full bg-pink-600 w-5 h-5 absolute -top-1 -right-3 flex items-center justify-center text-xs'>
-                {numOfItems}
+                {numOfFav}
               </div>
             </div>
 
@@ -137,7 +154,7 @@ const Header = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
               </Link>
               <div className='rounded-full bg-pink-600 w-5 h-5 absolute -top-1 -right-3 flex items-center justify-center text-xs'>
-                1
+                {numOfCart}
               </div>
             </div>
 

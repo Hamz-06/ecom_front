@@ -7,12 +7,15 @@ import { TrashIcon, ArrowSmLeftIcon } from "@heroicons/react/outline";
 import { stripe } from "../util/shopify";
 import { OrderPlaced } from "../Components/CartPage_Comp/CartPage_popUp";
 import { useRouter } from "next/router";
+import { fetchBagQuantity, quantityHandler, removeItemHandler } from "../util/cartProducts";
+import { useDispatch } from "react-redux";
+import { setValueCart } from "../redux/slice/numOfCart";
 
 function Cart({ session }) {
 
     const [items, updateItems] = useState([])
     const router = useRouter()
-
+    const dispatch = useDispatch()
     // console.log(session)
     useEffect(() => {
         const getBag = JSON.parse(window.localStorage.getItem('BASKET'))
@@ -42,21 +45,17 @@ function Cart({ session }) {
             options.push(i + 1)
         }
 
-        const quantityHandler = (e) => {
-            //update text for quantity
-            updQuantity(e.target.value)
-            //updating the local storage -> no need to update items state
-            items[index].quantity = e.target.value
-            //update local storage
-            window.localStorage.setItem('BASKET', JSON.stringify(items))
+        //i
+        const updateQuantityHandler = (e) => {
+            quantityHandler(e, updQuantity, items, index)
+            const cartQuantity = fetchBagQuantity()
+            dispatch(setValueCart(cartQuantity))
         }
-        const removeItemHandler = (index) => {
-            //update items and local storage 
-            const newItems = items.filter((_x, ind) => ind !== index)
-            console.log(newItems)
-            window.localStorage.setItem('BASKET', JSON.stringify(newItems))
-            updateItems(newItems)
-            // updateItems(items.splice(index,1))
+        //item handler 
+        const removeItem = () => {
+            removeItemHandler(items, updateItems, index)
+            const cartQuantity = fetchBagQuantity()
+            dispatch(setValueCart(cartQuantity))
         }
 
         return (
@@ -72,17 +71,17 @@ function Cart({ session }) {
                     </div>
                     <div className="flex items-center" >
                         Quantity
-                        <select className="bg-transparent" value={quantity} onChange={quantityHandler}>
+                        <select className="bg-transparent" value={quantity} onChange={updateQuantityHandler}>
                             {
                                 options.map((optionLoop, index) => {
 
-                                    return <option key={index} value={optionLoop.toString()}>{optionLoop}</option>
+                                    return <option key={index} value={optionLoop}>{optionLoop}</option>
                                 })
                             }
                         </select>
                     </div>
                     <div>
-                        <TrashIcon className="h-6 w-6" onClick={() => removeItemHandler(index)} />
+                        <TrashIcon className="h-6 w-6" onClick={() => removeItem()} />
                         <ArrowSmLeftIcon className="h-6 w-6" onClick={() => console.log(index)} />
                     </div>
                 </div>

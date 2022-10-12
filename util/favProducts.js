@@ -2,7 +2,7 @@ const removeFromFav = (prod) => {
 
     const getFav = fetchFav()
     const newFav = getFav.filter((fav) => fav.productID !== prod.productID)
-    console.log(getFav[0].productID, prod.productID)
+    // console.log(getFav[0].productID, prod.productID)
     window.localStorage.setItem('FAVOURITE', JSON.stringify(newFav))
 }
 //fetch fav

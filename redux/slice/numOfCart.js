@@ -4,27 +4,27 @@ const initialState = {
     value: 0,
 }
 
-export const numOfFav = createSlice({
+export const numOfCart = createSlice({
     name: 'FavCounter',
     initialState,
     reducers: {
-        incrementFav: (state) => {
+        incrementCart: (state) => {
             // Redux Toolkit allows us to write "mutating" logic in reducers. It
             // doesn't actually mutate the state because it uses the Immer library,
             // which detects changes to a "draft state" and produces a brand new
             // immutable state based off those changes
             state.value += 1
         },
-        decrementFav: (state) => {
+        decrementCart: (state) => {
             state.value -= 1
         },
-        setValueFav: (state, action) => {
+        setValueCart: (state, action) => {
             state.value = action.payload
         },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { incrementFav, decrementFav, setValueFav } = numOfFav.actions
+export const { incrementCart, decrementCart, setValueCart } = numOfCart.actions
 
-export default numOfFav.reducer
+export default numOfCart.reducer

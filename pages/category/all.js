@@ -12,7 +12,7 @@ import { Product } from "../../Components/category/ProductCard"
 
 function About({ products }) {
 
-  const [filters, updateFilters] = useState(true)
+  const [filters, updateFilters] = useState(false)
   const [type, updatetype] = useState('')
   const types = ['flags', 'cartoon']
   const [isMobile, setMobile] = useState()
@@ -44,7 +44,6 @@ function About({ products }) {
         </div>
         <div className="flex mr-5">
           <p onClick={() => updateFilters(!filters)} className="mr-12">{filters ? 'Hide' : 'Show'} Filters</p>
-          <p>Sort By</p>
         </div>
       </div>
     )
@@ -115,7 +114,7 @@ function About({ products }) {
           {/* remove products and display filters if on mobile screen */}
 
           {/* <div id='products' className=' w-full h-full' style={{ display: isMobile && filters ? 'none' : 'flex' }}> */}
-          <div id='products' className={`flex flex-wrap w-full h-full justify-center ${isMobile && filters ? 'invisible' : 'visible'}`}>
+          <div id='products' className={`flex flex-wrap w-full h-full justify-center md:justify-start ${isMobile && filters ? 'invisible' : 'visible'}`}>
             {
               products.map((product, index) => {
 

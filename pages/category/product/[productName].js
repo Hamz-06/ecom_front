@@ -7,7 +7,9 @@ import { addToFav, fetchFav, removeFromFav } from '../../../util/favProducts'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { decrement, increment } from '../../../redux/slice/numOfFav'
+import { decrementFav, incrementFav } from '../../../redux/slice/numOfFav'
+import { addToBag } from '../../../util/cartProducts'
+import { incrementCart } from '../../../redux/slice/numOfCart'
 function product({ product, price }) {
 
 
@@ -33,45 +35,26 @@ function product({ product, price }) {
         if (!isLike) {
             console.log('add to fav')
             addToFav(prod)
-            dispatch(increment())
+            dispatch(incrementFav())
 
         } else {
             console.log('remove from fav')
             removeFromFav(prod)
-            dispatch(decrement())
+            dispatch(decrementFav())
         }
 
     }
-    const addToBag = (prod) => {
-        // console.log(prod)
-
-        const getBag = JSON.parse(window.localStorage.getItem('BASKET'))
-        if (getBag === null) {
-            const bag = []
-            bag.push(prod)
-            window.localStorage.setItem('BASKET', JSON.stringify(bag))
-
-        } else {
-            getBag.map((bag, index) => {
-
-                if (bag.productName === prod.productName) {
-                    console.log('found')
-                    const updatedQuantity = bag.quantity + 1
-                    getBag[index].quantity = updatedQuantity
-                    window.localStorage.setItem('BASKET', JSON.stringify(getBag))
-                }
-                else if (bag.productName !== prod.productName && index === (getBag.length - 1)) {
-
-                    console.log('not found')
-                    getBag.push(prod)
-                    window.localStorage.setItem('BASKET', JSON.stringify(getBag))
-
-                }
-            })
-        }
-
+    const addToBagLocal = () => {
+        addToBag({
+            productName: product.name,
+            price: price.unit_amount,
+            productID: product.id,
+            priceID: price.id,
+            picture: product.images[0],
+            quantity: 1
+        })
+        dispatch(incrementCart())
     }
-
 
     return (
         //if product is not null
@@ -117,14 +100,8 @@ function product({ product, price }) {
                         <div className=''>
                             <button
                                 //add the item to the bag - local storage, save this object locally 
-                                onClick={() => addToBag({
-                                    productName: product.name,
-                                    price: price.unit_amount,
-                                    productID: product.id,
-                                    priceID: price.id,
-                                    picture: product.images[0],
-                                    quantity: 1
-                                })
+                                onClick={() =>
+                                    addToBagLocal()
                                 }>
                                 Add to Bag
                             </button>
