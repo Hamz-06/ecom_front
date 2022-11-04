@@ -104,7 +104,7 @@ function About({ products }) {
   return (
     <>
       <Header />
-      {type}
+
 
       <div className="w-screen h-full">
         {/* header for items */}

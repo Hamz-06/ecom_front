@@ -35,12 +35,14 @@ export const addToBag = (prod) => {
     // console.log(prod)
 
     const getBag = JSON.parse(window.localStorage.getItem('BASKET'))
+    console.log(getBag.length)
+    // if bag is null create empty arr and push
     if (getBag === null) {
         const bag = []
         bag.push(prod)
         window.localStorage.setItem('BASKET', JSON.stringify(bag))
-
-    } else {
+        // if contenets already inside bag add 
+    } else if (getBag.length > 0) {
         getBag.map((bag, index) => {
 
             if (bag.productName === prod.productName) {
@@ -57,6 +59,10 @@ export const addToBag = (prod) => {
 
             }
         })
+        //rare case if there is arr with length 0 add prod
+    } else {
+        getBag.push(prod)
+        window.localStorage.setItem('BASKET', JSON.stringify(getBag))
     }
 
 }

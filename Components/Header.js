@@ -46,7 +46,7 @@ const Header = () => {
 
   // header for sign in and out
   const headerOne = useMemo(() => {
-    console.log('reload')
+
     {/* Header one  */ }
     return (
       <div className=' bg-red-500 h-2/5 hidden items-center justify-evenly ml-auto w-1/4 md:flex md:justify-center text-sm'>
