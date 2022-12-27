@@ -15,7 +15,7 @@ export default function Home() {
   const secTwo_pageOne = useRef()
   const secTwo_pageTwo = useRef()
   const secTwo_pageThird = useRef()
-  
+
   const titleTimer = useRef([])
   const [titles, updateTitle] = useState([])
 
@@ -85,7 +85,7 @@ export default function Home() {
 
   })
 
-  
+
 
   //transform:belowCustom?'translateY(100%)':''
 
@@ -119,20 +119,17 @@ export default function Home() {
     }
   }, [belowCustom])
 
-  const [translateY, updateTranslateY] = useState()
-  const translateYY = useRef()
-
   useEffect(() => {
-    
-    const calcInfo = () =>{
+
+    const calcInfo = () => {
       var sectionThree_height = sectionThree.current.clientHeight
       var sectionThree_offsetTop = sectionThree.current.offsetTop
-      var sectionThree_offsetBottom = window.pageYOffset+sectionThree.current.clientHeight
-      
-      if(sectionThree_offsetTop<sectionThree_offsetBottom ){
-        var sectionThree_percent=(sectionThree_offsetBottom-sectionThree_offsetTop)/sectionThree_height
-        var shape_height = sectionThree.current.clientHeight*sectionThree_percent*0.75 + 'px'
-        var shape_width = sectionThree.current.clientWidth*sectionThree_percent*0.75 + 'px'
+      var sectionThree_offsetBottom = window.pageYOffset + sectionThree.current.clientHeight
+
+      if (sectionThree_offsetTop < sectionThree_offsetBottom) {
+        var sectionThree_percent = (sectionThree_offsetBottom - sectionThree_offsetTop) / sectionThree_height
+        var shape_height = sectionThree.current.clientHeight * sectionThree_percent * 1 + 'px'
+        var shape_width = sectionThree.current.clientWidth * sectionThree_percent * 1 + 'px'
         sectionThree_shape.current.style.height = shape_height
         sectionThree_shape.current.style.width = shape_width
         // updateTranslateY(h)
@@ -140,11 +137,11 @@ export default function Home() {
       }
     }
     document.addEventListener('scroll', calcInfo)
-    return ()=>{
+    return () => {
       document.removeEventListener('scroll', calcInfo)
     }
 
-    
+
   }, [])
 
 
@@ -158,7 +155,7 @@ export default function Home() {
         <link rel="preconnect" href="https://fonts.googleapis.com"></link>
         <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet"></link>
 
-        
+
       </Head>
       {/* header content */}
 
@@ -166,7 +163,7 @@ export default function Home() {
 
       {/* Main Content */}
       <main className='overflow-x-hidden font-internRegular'>
-
+        {/* section one  */}
         <section className='flex w-full 
         h-screen md:flex-row-reverse flex-col' ref={sectionOne}>
           {/* <button onClick={()=>updateCustom(!belowCustom)}>Click me</button> */}
@@ -310,23 +307,22 @@ export default function Home() {
           </div>
         </section>
 
+        {/* section three  */}
         <section>
 
           <div ref={sectionThree} className='w-screen h-screen bg-red-600 flex items-center justify-center'>
             {
-              
+
             }
             <div ref={sectionThree_shape} className='h-10 bg-blue-400 w-10 rounded'></div>
-              
-                
+
+
 
           </div>
 
         </section>
 
-        <section>
-          <div className="bg-black w-screen h-screen"></div>
-        </section>
+
 
 
 
