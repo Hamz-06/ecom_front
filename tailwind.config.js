@@ -2,7 +2,7 @@
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
+    "./Components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
 
@@ -14,11 +14,11 @@ module.exports = {
         // ...
       },
       fontFamily: {
-        internRegular: ['intern-regular'],
+        internRegular: ['intern-regular', 'sans-serif'],
         roboto: ['Roboto', 'sans-serif'],
-        internBold: ['intern-bold'],
-        internExtraBold: ['intern-extraBold'],
-        quick: ['Quicksand']
+        internBold: ['intern-bold', 'sans-serif'],
+        internExtraBold: ['intern-extraBold', 'sans-serif'],
+        quick: ['Quicksand', 'sans-serif']
       },
 
     },
