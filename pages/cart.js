@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import Header from "../Components/Header";
 import Image from "next/image";
 import { useState } from "react";
-import { stripe } from "../util/shopify";
+import { stripe } from "../util/stripe";
 import { OrderPlaced } from "../Components/CartPage_Comp/cartPopUp";
 import { useRouter } from "next/router";
 

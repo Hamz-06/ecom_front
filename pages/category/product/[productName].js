@@ -3,7 +3,7 @@ import React from 'react'
 import Header from '../../../Components/Header'
 
 import { useRouter } from 'next/router'
-import { stripe } from '../../../util/Shopify'
+import { stripe } from '../../../util/stripe'
 import { addToFav, fetchFav, removeFromFav } from '../../../util/favProducts'
 import { useState } from 'react'
 import { useEffect } from 'react'

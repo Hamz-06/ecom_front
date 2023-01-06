@@ -1,7 +1,7 @@
 
 import React from "react"
 import { useEffect, useState, useRef } from "react"
-import { stripe } from "../../util/Shopify"
+import { stripe } from "../../util/stripe"
 import { useTransition, animated, useSpring, config } from 'react-spring'
 import Header from "../../Components/Header"
 import Image from 'next/image'
