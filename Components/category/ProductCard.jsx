@@ -19,8 +19,8 @@ const Products = ({ product, displayInfo }) => {
     // }
   });
   const { type } = displayInfo;
-  const dispatch = useDispatch();
   const metaData = product.metadata;
+  const dispatch = useDispatch();
   const [isHover, setHover] = useState(false);
   const [isLike, setLike] = useState(false);
   const [displayImage, updateDisplayImage] = useState(
@@ -118,7 +118,7 @@ const Products = ({ product, displayInfo }) => {
     // <Link href={!isLike?`/category/product/${prodctNameClear}-${productId}`:{}}>
     <animated.div
       style={props}
-      className="md:w-80 w-96 h-[430px] bg-gray-400 shadow-md mt-5 mb-5 ml-5 mr-5 p-2 relative"
+      className="md:w-80 w-96 h-[430px] hover:bg-white hover:outline hover:outline-black bg-slate-100 shadow-md mt-5 mb-5 ml-5 mr-5 p-2 relative"
       onClick={(e) =>
         likeButton.current.contains(e.target)
           ? addToFavourite()
@@ -153,7 +153,7 @@ const Products = ({ product, displayInfo }) => {
       {/* title  */}
       <p className="font-semibold">
         {product.name} {metaData.info ? "-" : ""}{" "}
-        <span className="text-red-800">{metaData.info}</span>
+        <span className="text-red-600 font-bold">{metaData.info}</span>
       </p>
 
       {/* type */}

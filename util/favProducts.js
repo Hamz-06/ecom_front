@@ -11,7 +11,12 @@ const fetchFav = () => {
     return getFav
 
 }
-
+const fetchfavQuantity = () => {
+    const getFav = fetchFav()
+    const totalQuantity = 0
+    getFav ? totalQuantity = getFav.length : ''
+    return totalQuantity
+}
 //add to fav
 const addToFav = (prod) => {
     const getFav = fetchFav()
@@ -32,4 +37,4 @@ const addToFav = (prod) => {
 
 }
 
-export { addToFav, fetchFav, removeFromFav } 
+export { addToFav, fetchFav, removeFromFav, fetchfavQuantity } 

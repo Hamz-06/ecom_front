@@ -7,9 +7,9 @@ export const fetchBag = () => {
 export const fetchBagQuantity = () => {
     const getBag = fetchBag()
     var totalQuantity = 0;
-    getBag.map((bag) => {
+    getBag ? getBag.map((bag) => {
         totalQuantity += bag.quantity
-    })
+    }) : ''
     return totalQuantity
 }
 //quantity handler 
@@ -35,7 +35,7 @@ export const addToBag = (prod) => {
     // console.log(prod)
 
     const getBag = JSON.parse(window.localStorage.getItem('BASKET'))
-    console.log(getBag.length)
+
     // if bag is null create empty arr and push
     if (getBag === null) {
         const bag = []

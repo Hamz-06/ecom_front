@@ -3,9 +3,8 @@ import { useEffect } from "react";
 import Header from "../Components/Header";
 import Image from "next/image";
 import { useState } from "react";
-import { TrashIcon, ArrowSmLeftIcon } from "@heroicons/react/outline";
 import { stripe } from "../util/shopify";
-import { OrderPlaced } from "../Components/CartPage_Comp/CartPage_popUp";
+import { OrderPlaced } from "../Components/CartPage_Comp/cartPopUp";
 import { useRouter } from "next/router";
 import { fetchBagQuantity, quantityHandler, removeItemHandler } from "../util/cartProducts";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +14,8 @@ import { decrementFav, incrementFav } from "../redux/slice/numOfFav";
 import { addToFav, fetchFav, removeFromFav } from "../util/favProducts";
 import { useCallback } from "react";
 import { useMemo } from "react";
+import Link from 'next/link'
+import { CreateItem } from "../Components/CartPage_Comp/createItemCard";
 
 function Cart({ session }) {
 
@@ -49,96 +50,6 @@ function Cart({ session }) {
         return updatedPrice
     }
 
-    //create item func
-    const CreateItem = ({ item, index }) => {
-        const [quantity, updQuantity] = useState(item.quantity)
-        const [isLike, setLike] = useState(false)
-        const options = []
-        //create 10 quantity options
-        for (let i = 0; i < 10; i++) {
-            options.push(i + 1)
-        }
-
-        useEffect(() => {
-            const favourites = fetchFav()
-            favourites?.map((fav) => {
-                fav.productID === item.productID ? setLike(true) : ''
-            })
-
-        }, [])
-        //update quantity for item 
-        const updateQuantityHandler = (e) => {
-            quantityHandler(e, updQuantity, items, index)
-            const cartQuantity = fetchBagQuantity()
-            dispatch(setValueCart(cartQuantity))
-        }
-        //item handler 
-        const removeItem = () => {
-            removeItemHandler(items, updateItems, index)
-            const cartQuantity = fetchBagQuantity()
-            dispatch(setValueCart(cartQuantity))
-        }
-        //add to fav func
-        const addToFavourite = () => {
-            setLike(!isLike)
-            const prod = {
-                productName: item.productName,
-                price: item.price,
-                productID: item.productID,
-                priceID: item.priceID,
-                picture: item.picture,
-            }
-            if (!isLike) {
-                console.log('add to fav')
-                addToFav(prod)
-                dispatch(incrementFav())
-
-            } else {
-                console.log('remove from fav')
-                removeFromFav(prod)
-                dispatch(decrementFav())
-            }
-        }
-
-
-        return (
-            <div className="bg-red-700 p-2 m-2 flex" >
-                <div className="w-32 h-32 bg-emerald-700 relative">
-                    <Image
-                        src={item.picture}
-                        layout="fill"
-                        objectFit='contain'
-                    />
-                </div>
-
-                <div className="flex-grow ml-5">
-                    <div className="flex">
-                        <p className="font-medium">{item.productName}</p>
-                        <p className="ml-auto">{updatePrice(item.price * item.quantity)}</p>
-                    </div>
-
-                    <div className="flex items-center mt-2" >
-                        Quantity
-                        <select className="bg-transparent" value={quantity} onChange={updateQuantityHandler}>
-                            {
-                                options.map((optionLoop, index) => {
-
-                                    return <option key={index} value={optionLoop}>{optionLoop}</option>
-                                })
-                            }
-                        </select>
-                    </div>
-                    <div className="">
-                        <TrashIcon className="h-6 w-6 inline-block" onClick={() => removeItem()} />
-
-                        <svg className="h-6 w-6 inline-block ml-2" onClick={() => addToFavourite()} xmlns="http://www.w3.org/2000/svg" fill={isLike ? 'red' : 'none'} viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor" ><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"></path></svg>
-                    </div>
-                </div>
-            </div>
-        )
-
-    }
-
 
     function checkOut() {
         setLoading(true)
@@ -166,7 +77,7 @@ function Cart({ session }) {
         return isLoading ?
             <div className="top-1/2 left-1/2 absolute -translate-x-1/2 -translate-y-1/2">
                 <div className="animate-spin w-[120px] h-[120px] rounded-full 
-                border-8 border-gray-500 border-t-green-800">
+                border-8 border-background border-t-green-500">
                 </div>
             </div> : ""
     }
@@ -183,24 +94,25 @@ function Cart({ session }) {
                     customerEmail={session.customer_email}
                 />) : ''
             }
-
-            <div className="h-32 w-full bg-lime-300 md:hidden">
+            {/* only for mobile top */}
+            {/* <div className="h-32 w-full bg-lime-300 md:hidden">
                 Bag
-            </div>
-            <div className="flex flex-col md:flex-row">
+            </div> */}
 
-                <div className="w-[100%] max-h-[80vh] bg-yellow-500 overflow-y-auto overflow-x-hidden md:w-[60%] md:max-h-[95vh] lg:pl-10 ">
+            <div className="flex flex-col h-[100vh] md:h-full bg-secondground md:flex-row">
+                {/* left side with picture  */}
+                <div className="w-[100%] max-h-[80vh] bg-background overflow-y-auto overflow-x-hidden md:w-[60%] md:max-h-[95vh] lg:pl-10 ">
+
 
                     {
                         items ? (
                             items.map((item, index) => {
-                                return <CreateItem item={item} index={index} key={index} />
+                                return <CreateItem item={item} index={index} key={index} updateItems={updateItems} items={items} />
                             })) : ''
                     }
-
                 </div>
-
-                <div className="w-[100%] h-[95vh] bg-red-300 md:w-[40%] p-8">
+                {/* right side with summary  */}
+                <div className="w-[100%] h-max md:h-[95vh] bg-secondground md:w-[40%] p-8 border-l-2 md:border-black">
                     <div className="font-bold text-lg">
                         Summary
                     </div>
@@ -232,7 +144,7 @@ function Cart({ session }) {
 
                     <hr className="border-black opacity-70 mt-5" />
 
-                    <button className="mt-8 block bg-gray-300 p-2 rounded-3xl ml-auto mr-auto" onClick={() => checkOut()}>Checkout</button>
+                    <button className="mt-8 block bg-gray-300 hover:bg-gray-600 p-2 rounded-3xl ml-auto mr-auto" onClick={() => checkOut()}>Checkout</button>
 
 
                 </div>
