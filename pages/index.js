@@ -34,7 +34,7 @@ export default function Home() {
 
           <div className='pl-0 md:pl-10 h-full w-full flex items-center flex-col justify-center md:items-start'>
 
-            <div className='text-center md:text-left font-internBold text-8xl md:text-9xl flex w-full'>
+            <div className='text-center md:text-left font-internBold text-8xl md:text-9xl flex w-full flex-col md:flex-row'>
               <div>
                 This is a <br />template!
               </div>

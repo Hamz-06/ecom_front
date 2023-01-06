@@ -82,8 +82,7 @@ const Header = () => {
             )
           })
         }
-        <div className='mt-14 '>Sign In</div>
-        <div className='mt-14'>Join Us</div>
+
       </div>
     ) : ''
 
@@ -121,7 +120,7 @@ const Header = () => {
             </div>
           </div>
           {/* links for web  */}
-          <div className="basis-1/2 hidden md:flex border-l-2 border-black border-solid justify-evenly items-center ">
+          <div className="basis-1/2 hidden md:flex   justify-evenly items-center ">
             {
               links.map((link, index) => {
                 return (
@@ -137,7 +136,7 @@ const Header = () => {
             }
           </div>
 
-          <div className="basis-1/2 border-l-0 md:border-l-2 border-black md:basis-1/4 flex justify-end md:justify-center items-center">
+          <div className="basis-1/2 border-l-0 border-black md:basis-1/4 flex justify-end md:justify-center items-center">
 
             {/* fav icon  */}
             <div className="relative z-10 mr-7 md:mr-5 w-14 h-14 mt-2 flex items-center justify-center">

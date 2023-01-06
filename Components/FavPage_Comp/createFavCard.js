@@ -5,9 +5,12 @@ import { useState, useRef, useEffect } from "react";
 import { addToFav, fetchFav, removeFromFav } from "../../util/favProducts";
 import { useDispatch } from "react-redux";
 import { decrementFav, incrementFav } from "../../redux/slice/numOfFav";
+import Router, { useRouter } from "next/router";
+
 const FavCard = ({ item, index, items }) => {
     const prodctNameClear = item.productName.replace(/\s/g, "");
     const productId = item.productID;
+    const router = useRouter();
     const [isLike, setLike] = useState(false);
     const likeButton = useRef();
     const dispatch = useDispatch();
@@ -44,7 +47,7 @@ const FavCard = ({ item, index, items }) => {
     };
     return (
         <div
-            className="md:w-80 w-96 h-[430px] hover:bg-white hover:outline hover:outline-black bg-slate-100
+            className="md:w-80 w-96 h-[380px] hover:bg-white hover:outline hover:outline-black bg-slate-100
              shadow-md mt-5 mb-5 ml-5 mr-5 p-2 relative"
             onClick={(e) =>
                 likeButton.current.contains(e.target)
@@ -82,12 +85,12 @@ const FavCard = ({ item, index, items }) => {
                 {/* <span className="text-red-600 font-bold">{metaData.info}</span> */}
             </p>
 
-            <p>
+            {/* <p>
                 Click me
             </p>
             <p>
                 go to checkout
-            </p>
+            </p> */}
 
             {/* price  */}
             <div>
