@@ -13,7 +13,7 @@ const fetchFav = () => {
 }
 const fetchfavQuantity = () => {
     const getFav = fetchFav()
-    const totalQuantity = 0
+    var totalQuantity = 0
     getFav ? totalQuantity = getFav.length : ''
     return totalQuantity
 }
