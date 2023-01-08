@@ -5,6 +5,7 @@ export default async function handler(req, res) {
 
   const items = JSON.parse(req.body)
   // res.send({lol:'lx'})
+  console.log(req.body)
   if (req.method === 'POST') {
     try {
       // Create Checkout Sessions from body params.

@@ -54,6 +54,7 @@ function Cart({ session }) {
                 quantity: item.quantity
             }
         })) : ''
+
         updatedItems = JSON.stringify(updatedItems)
         fetch('api/hello', {
             method: 'POST',

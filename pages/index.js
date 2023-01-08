@@ -26,35 +26,44 @@ export default function Home() {
       {/* Main Content */}
       <main className=''>
         {/* section one  */}
-        <section className=' w-screen h-screen bg-[#add8e6] dark:bg-black'>
+        <section className=' w-screen max-h-min md:h-screen bg-[#add8e6] dark:bg-black'>
           {/* mobile picture  */}
           <div className='absolute w-full h-full flex items-center justify-center z-0 md:hidden'>
-            <div className='w-[80%] h-[80%] top-0 relative' >
+            {/* <div className='w-[80%] h-[80%] top-0 relative' >
               <Image
                 src={bts}
                 layout="fill"
                 objectFit='contain'
               />
-            </div>
+            </div> */}
           </div>
 
-          <div className=' h-full w-[100%] md:w-[50%] inline-block '>
+          <div className='h-full w-[100%] md:w-[50%] inline-block '>
             <div className='w-full h-full'>
               <div className='flex w-full flex-col justify-evenly md:justify-center items-center h-full'>
                 {/* template title  */}
-                <div className='text-center text-blue-700 font-internBold text-8xl md:text-7xl lg:text-8xl mb-5 z-20 textStroke '>
+                <div className='text-center font-internBold text-8xl md:text-7xl lg:text-8xl z-20 mt-5'>
                   This is a <br />template!
                 </div>
+
                 {/* button  */}
                 <div className='ml-auto mr-auto z-20'>
                   <Link href="/category/all">
-                    <button className='text-lg bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl hover:bg-blue-400  p-3 rounded-3xl '>
+                    <button className='text-2xl font-bold bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl hover:bg-blue-400  p-4 rounded-3xl absolute md:contents z-20'>
                       View Products
                     </button>
                   </Link>
                 </div>
+                {/* image  */}
+                <div className='w-[50vw] h-[50vh] top-0 relative md:hidden inline-block' >
+                  <Image
+                    src={bts}
+                    layout="fill"
+                    objectFit='contain'
+                  />
+                </div>
                 {/* box  */}
-                <div className='z-10  text-lg md:text-base md:font-normal bg-gradient-to-r from-cyan-500 to-blue-500  md:bg-transparent md:shadow-none rounded-3xl shadow-xl p-8 w-[80%] ml-auto mr-auto mt-5'>
+                <div className='z-10  text-lg md:text-base md:font-normal bg-gradient-to-r from-cyan-500 to-blue-500  md:bg-transparent md:shadow-none rounded-3xl shadow-xl p-8 w-[80%] ml-auto mr-auto mt-5 mb-5'>
                   <div className='text-lg text-center'>
                     This is just a template and subject to change.
                   </div>
