@@ -42,14 +42,14 @@ export default function Home() {
             <div className='w-full h-full'>
               <div className='flex w-full flex-col justify-evenly md:justify-center items-center h-full'>
                 {/* template title  */}
-                <div className='text-center font-internBold text-8xl md:text-7xl lg:text-8xl z-20 mt-5'>
+                <div className='text-center font-internBold text-8xl md:text-7xl lg:text-8xl z-20 mt-5 md:mb-5'>
                   This is a <br />template!
                 </div>
 
                 {/* button  */}
-                <div className='ml-auto mr-auto z-20'>
+                <div className='ml-auto mr-auto absolute md:contents z-20'>
                   <Link href="/category/all">
-                    <button className='text-2xl font-bold bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl hover:bg-blue-400  p-4 rounded-3xl absolute md:contents z-20'>
+                    <button className='text-2xl font-bold bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl hover:bg-blue-400  p-4 rounded-3xl '>
                       View Products
                     </button>
                   </Link>
@@ -91,6 +91,11 @@ export default function Home() {
                 objectFit='contain'
               />
             </div>
+          </div>
+
+          {/* email  */}
+          <div className='absolute top-1/2 right-0 translate-x-1/2 mr-8 rotate-90 z-30'>
+            Hamzah1010@hotmail.co.uk
           </div>
 
         </section>
