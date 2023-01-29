@@ -118,7 +118,7 @@ const Products = ({ product, displayInfo }) => {
     // <Link href={!isLike?`/category/product/${prodctNameClear}-${productId}`:{}}>
     <animated.div
       style={props}
-      className="md:w-80 w-96 h-[430px] hover:bg-white hover:outline hover:outline-black bg-slate-100 shadow-md mt-5 mb-5 ml-5 mr-5 p-2 relative"
+      className="md:w-80 w-96 h-[430px] hover:bg-white  bg-slate-100 shadow-md mt-5 mb-5 ml-5 mr-5 p-2 relative"
       onClick={(e) =>
         likeButton.current.contains(e.target)
           ? addToFavourite()
